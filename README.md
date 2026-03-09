@@ -1,48 +1,59 @@
 # FRP Desktop
 
-[English](#english) | [中文](#中文)
+FRP Desktop 是一个面向普通用户的 FRP 图形客户端。  
+你不需要手写 `frpc.toml`，只需要填写服务器信息和本地端口，即可一键启动端口转发。
 
-## English
+## 这个软件能做什么
 
-FRP Desktop is a lightweight desktop client for FRP (`frpc`) built with **Go + Wails**.
+- 图形化配置 FRP 服务器（地址、端口、Token）
+- 一键启动 / 停止端口转发
+- 支持多个本地端口同时转发
+- 自动生成并管理 `frpc` 配置
+- 实时显示运行状态（是否启动、PID、错误信息）
 
-- Project introduction: [PROJECT_INTRO.md](./PROJECT_INTRO.md)
-- Chinese introduction: [PROJECT_INTRO_CN.md](./PROJECT_INTRO_CN.md)
+## 适用场景
 
-### Quick Start
+- 你有一台已部署 `frps` 的服务器
+- 你希望把本机服务（如 3000、8080、5000 端口）映射到公网
+- 你不想每次都手改命令和配置文件
 
-```bash
-cd /Users/dsfeiji/Downloads/frp
-PATH="$HOME/go/bin:$PATH" GOPROXY="https://goproxy.cn,direct" wails dev
-```
+## 安装
 
-### Build
+请在 GitHub Releases 页面下载对应系统版本：
 
-```bash
-PATH="$HOME/go/bin:$PATH" GOPROXY="https://goproxy.cn,direct" wails build -clean -platform darwin/universal
-```
+- macOS: `.dmg`
+- Windows: `.exe`（或 `.zip`）
 
-## 中文
+下载地址：
+- https://github.com/dsfeiji/frp-desktop/releases
 
-FRP Desktop 是一个基于 **Go + Wails** 的 FRP（`frpc`）桌面客户端。
+## 使用方法（3 步）
 
-- 中文介绍文档：[PROJECT_INTRO_CN.md](./PROJECT_INTRO_CN.md)
-- English intro: [PROJECT_INTRO.md](./PROJECT_INTRO.md)
+1. 打开软件，点击右上角齿轮，填写服务器信息：
+   - `服务器地址`：你的 FRP 服务地址
+   - `服务器端口`：通常是 `7000`
+   - `认证 Token`：与你服务器一致
+2. 在主界面输入本地端口，例如：`3000,8080`
+3. 点击 **开始转发**，状态显示“运行中”即成功
 
-### 快速开始
+## 常见问题
 
-```bash
-cd /Users/dsfeiji/Downloads/frp
-PATH="$HOME/go/bin:$PATH" GOPROXY="https://goproxy.cn,direct" wails dev
-```
+### 1) 点击开始后失败
 
-### 构建
+请先检查：
+- 服务器地址/端口/Token 是否正确
+- 服务器 `frps` 是否在线
+- 本地端口是否真的有服务在监听
 
-```bash
-PATH="$HOME/go/bin:$PATH" GOPROXY="https://goproxy.cn,direct" wails build -clean -platform darwin/universal
-```
+### 2) macOS 提示无法打开
 
-## Security Note / 安全说明
+由于未做开发者签名公证，首次运行可能被系统拦截。  
+可通过“右键应用 -> 打开”或“系统设置 -> 隐私与安全性 -> 仍要打开”放行。
 
-Do not commit real server addresses, tokens, or private credentials.
-请勿提交真实服务器地址、Token 或私密凭据到仓库。
+### 3) 修改后是否会保存
+
+会。软件会自动保存你的服务器和端口配置，下次打开可继续使用。
+
+## 安全提示
+
+请勿在公开仓库或截图中泄露真实服务器地址与 Token。
