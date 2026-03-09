@@ -1,59 +1,66 @@
-# FRP Desktop
+<p align="center">
+  <img src="https://picui.ogmua.cn/s1/2026/03/09/69ae6edbd4635.webp" alt="FRP Desktop Logo" width="100">
+</p>
 
-FRP Desktop 是一个面向普通用户的 FRP 图形客户端。  
-你不需要手写 `frpc.toml`，只需要填写服务器信息和本地端口，即可一键启动端口转发。
+<h1 align="center">FRP Desktop</h1>
 
-## 这个软件能做什么
+<p align="center">
+  <strong>一款面向普通用户的 FRP 图形客户端</strong>
+</p>
 
-- 图形化配置 FRP 服务器（地址、端口、Token）
-- 一键启动 / 停止端口转发
-- 支持多个本地端口同时转发
-- 自动生成并管理 `frpc` 配置
-- 实时显示运行状态（是否启动、PID、错误信息）
+<p align="center">
+  <a href="https://github.com/dsfeiji/frp-desktop/releases">
+    <img src="https://img.shields.io/github/v/release/dsfeiji/frp-desktop?style=flat-square&color=blue" alt="Release">
+  </a>
+  <img src="https://img.shields.io/github/license/dsfeiji/frp-desktop?style=flat-square" alt="License">
+  <img src="https://img.shields.io/github/stars/dsfeiji/frp-desktop?style=flat-square" alt="Stars">
+  <img src="https://img.shields.io/badge/Platform-Windows%20%7C%20macOS-brightgreen?style=flat-square" alt="Platform">
+</p>
 
-## 适用场景
+<p align="center">
+  <img src="https://picui.ogmua.cn/s1/2026/03/09/69ae6f91204c4.webp" alt="FRP Desktop 软件界面" width="700" style="border-radius: 8px;">
+</p>
 
-- 你有一台已部署 `frps` 的服务器
-- 你希望把本机服务（如 3000、8080、5000 端口）映射到公网
-- 你不想每次都手改命令和配置文件
+---
 
-## 安装
+FRP Desktop 让你告别手写 `frpc.toml`。只需填写服务器信息和本地端口，即可一键启动端口转发，实现快速的内网穿透。
 
-请在 GitHub Releases 页面下载对应系统版本：
+## 🛠️ 这个软件能做什么
 
-- macOS: `.dmg`
-- Windows: `.exe`（或 `.zip`）
+- **图形化配置**：轻松填写 FRP 服务器（地址、端口、Token）。
+- **一键启停**：快速启动或停止端口转发任务。
+- **多端口映射**：支持同时转发多个本地端口（如 `3000, 8080`）。
+- **自动托管**：自动生成并管理底层 `frpc` 配置文件。
+- **实时监控**：显示运行状态、进程 PID 及错误反馈。
 
-下载地址：
-- https://github.com/dsfeiji/frp-desktop/releases
+## 🌐 适用场景
 
-## 使用方法（3 步）
+- 你有一台已部署 `frps` 的服务器。
+- 你希望把本机服务（如 3000、8080、5000 端口）映射到公网。
+- 你不想每次都手写复杂的命令和配置文件。
 
-1. 打开软件，点击右上角齿轮，填写服务器信息：
-   - `服务器地址`：你的 FRP 服务地址
-   - `服务器端口`：通常是 `7000`
-   - `认证 Token`：与你服务器一致
-2. 在主界面输入本地端口，例如：`3000,8080`
-3. 点击 **开始转发**，状态显示“运行中”即成功
+## 📦 安装指南
 
-## 常见问题
+请在 [GitHub Releases](https://github.com/dsfeiji/frp-desktop/releases) 页面下载对应版本：
 
-### 1) 点击开始后失败
+- **macOS**: 下载 `.dmg` 文件安装。
+- **Windows**: 下载 `.exe` 安装包或 `.zip` 绿色版。
 
-请先检查：
-- 服务器地址/端口/Token 是否正确
-- 服务器 `frps` 是否在线
-- 本地端口是否真的有服务在监听
+## 💡 使用方法（只需 3 步）
 
-### 2) macOS 提示无法打开
+1. **配置服务器**：点击右上角齿轮，填写地址、端口（通常 7000）和 Token。
+2. **输入端口**：在主界面输入需要转发的本地端口，例如：`3000, 8080`。
+3. **开启转发**：点击 **[开始转发]**，状态显示“运行中”即成功。
 
-由于未做开发者签名公证，首次运行可能被系统拦截。  
-可通过“右键应用 -> 打开”或“系统设置 -> 隐私与安全性 -> 仍要打开”放行。
+## ❓ 常见问题
 
-### 3) 修改后是否会保存
+- **1) 启动失败？** 请检查服务器配置（地址/端口/Token）是否正确，以及服务器端 `frps` 是否在线。
+- **2) macOS 无法打开？** 因未做开发者签名，请通过“右键图标 -> 打开”或在“系统设置 -> 隐私与安全性”中选择“仍要打开”。
+- **3) 配置会保存吗？** 会。软件会自动保存你的所有设置，下次打开可直接使用。
 
-会。软件会自动保存你的服务器和端口配置，下次打开可继续使用。
+---
 
-## 安全提示
+> [!IMPORTANT]
+> **安全提示**：请勿在公开仓库或截图中泄露真实服务器地址与 Token。
 
-请勿在公开仓库或截图中泄露真实服务器地址与 Token。
+**项目仓库:** [https://github.com/dsfeiji/frp-desktop](https://github.com/dsfeiji/frp-desktop)
