@@ -111,19 +111,25 @@ jobs:
         run: |
           $ErrorActionPreference = "Stop"
           if (!(Test-Path "build\\bin\\frpc.exe")) { throw "frpc.exe not found in build/bin" }
+          $appBinary = Get-ChildItem build\bin\*.exe | Where-Object { $_.Name -ne "frpc.exe" -and $_.Name -notlike "*installer*" } | Select-Object -First 1
+          if (-not $appBinary) { throw "Windows app binary not found in build/bin" }
+          $nsisExe = "${env:ProgramFiles(x86)}\NSIS\makensis.exe"
+          if (!(Test-Path $nsisExe)) { $nsisExe = "makensis" }
           Push-Location "build\\windows\\installer"
-          makensis -DARG_WAILS_AMD64_BINARY=..\\..\\bin\\frp.exe project.nsi
+          & $nsisExe "/DARG_WAILS_AMD64_BINARY=..\\..\\bin\\$($appBinary.Name)" project.nsi
           Pop-Location
 
       - name: Package zip
         shell: powershell
         run: |
           New-Item -ItemType Directory -Path release\windows -Force | Out-Null
-          Copy-Item build\bin\frp.exe release\windows\frp-desktop-windows-amd64.exe -Force
+          $appBinary = Get-ChildItem build\bin\*.exe | Where-Object { $_.Name -ne "frpc.exe" -and $_.Name -notlike "*installer*" } | Select-Object -First 1
+          if (-not $appBinary) { throw "Windows app binary not found in build/bin" }
+          Copy-Item $appBinary.FullName release\windows\frp-desktop-windows-amd64.exe -Force
           $installer = Get-ChildItem build\bin\*-installer.exe | Select-Object -First 1
           if (-not $installer) { throw "Windows installer was not generated" }
           Copy-Item $installer.FullName release\windows\frp-desktop-windows-amd64-installer.exe -Force
-          Compress-Archive -Path build\bin\frp.exe,build\bin\frpc.exe -DestinationPath release\windows\frp-desktop-windows-amd64.zip -Force
+          Compress-Archive -Path $appBinary.FullName,build\bin\frpc.exe -DestinationPath release\windows\frp-desktop-windows-amd64.zip -Force
 
       - name: Upload Windows artifact
         uses: actions/upload-artifact@v4
