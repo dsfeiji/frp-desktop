@@ -153,12 +153,14 @@ async function startForward() {
 async function boot() {
   const cfg = await GetConfig();
   Object.assign(currentConfig, cfg);
+  let needOnboarding = false;
 
   if (!Array.isArray(currentConfig.localPorts)) {
     currentConfig.localPorts = [];
   }
   if (!currentConfig.serverAddr) {
     currentConfig.serverAddr = '';
+    needOnboarding = true;
   }
   if (!Number.isInteger(currentConfig.serverPort) || currentConfig.serverPort <= 0 || currentConfig.serverPort > 65535) {
     currentConfig.serverPort = 7000;
@@ -172,6 +174,10 @@ async function boot() {
   }
   syncSettingsInputs();
   await refreshState();
+  if (needOnboarding) {
+    setStatus('状态: 请先在右上角设置服务器信息', true);
+    openSettings();
+  }
 
   document.getElementById('settingsBtn').addEventListener('click', () => {
     syncSettingsInputs();
