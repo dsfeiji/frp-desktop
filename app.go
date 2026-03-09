@@ -315,7 +315,8 @@ func (a *App) writeFrpcToml(cfg AppConfig) error {
 	b.WriteString("\"\n")
 	b.WriteString("serverPort = ")
 	b.WriteString(strconv.Itoa(cfg.ServerPort))
-	b.WriteString("\n\n")
+	b.WriteString("\n")
+	b.WriteString("transport.protocol = \"quic\"\n\n")
 
 	if cfg.AuthToken != "" {
 		b.WriteString("[auth]\n")
