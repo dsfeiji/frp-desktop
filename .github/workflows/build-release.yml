@@ -106,13 +106,16 @@ jobs:
         shell: powershell
         run: |
           New-Item -ItemType Directory -Path release\windows -Force | Out-Null
+          Copy-Item build\bin\frp.exe release\windows\frp-desktop-windows-amd64.exe -Force
           Compress-Archive -Path build\bin\frp.exe,build\bin\frpc.exe -DestinationPath release\windows\frp-desktop-windows-amd64.zip -Force
 
       - name: Upload Windows artifact
         uses: actions/upload-artifact@v4
         with:
           name: frp-desktop-windows-amd64
-          path: release/windows/frp-desktop-windows-amd64.zip
+          path: |
+            release/windows/frp-desktop-windows-amd64.exe
+            release/windows/frp-desktop-windows-amd64.zip
 
   release:
     if: startsWith(github.ref, 'refs/tags/')
@@ -129,4 +132,5 @@ jobs:
         with:
           files: |
             dist/frp-desktop-macos-arm64/frp-desktop-macos-arm64.dmg
+            dist/frp-desktop-windows-amd64/frp-desktop-windows-amd64.exe
             dist/frp-desktop-windows-amd64/frp-desktop-windows-amd64.zip
