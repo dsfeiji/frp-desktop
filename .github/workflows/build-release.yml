@@ -88,6 +88,10 @@ jobs:
       - name: Install Wails CLI
         run: go install github.com/wailsapp/wails/v2/cmd/wails@v2.11.0
 
+      - name: Install NSIS
+        shell: powershell
+        run: choco install nsis -y
+
       - name: Build app (Windows)
         shell: powershell
         run: |
@@ -102,19 +106,30 @@ jobs:
           Expand-Archive -Path "frp_windows_amd64.zip" -DestinationPath "."
           Copy-Item "frp_${env:FRP_VERSION}_windows_amd64\frpc.exe" "build\bin\frpc.exe" -Force
 
+      - name: Build NSIS installer
+        shell: powershell
+        run: |
+          $env:PATH = "$HOME\go\bin;$env:PATH"
+          wails build -platform windows/amd64 --nsis
+
       - name: Package zip
         shell: powershell
         run: |
           New-Item -ItemType Directory -Path release\windows -Force | Out-Null
           Copy-Item build\bin\frp.exe release\windows\frp-desktop-windows-amd64.exe -Force
+          if (Test-Path "build\bin\frp-desktop-amd64-installer.exe") {
+            Copy-Item build\bin\frp-desktop-amd64-installer.exe release\windows\frp-desktop-windows-amd64-installer.exe -Force
+          }
           Compress-Archive -Path build\bin\frp.exe,build\bin\frpc.exe -DestinationPath release\windows\frp-desktop-windows-amd64.zip -Force
 
       - name: Upload Windows artifact
         uses: actions/upload-artifact@v4
         with:
           name: frp-desktop-windows-amd64
+          if-no-files-found: error
           path: |
             release/windows/frp-desktop-windows-amd64.exe
+            release/windows/frp-desktop-windows-amd64-installer.exe
             release/windows/frp-desktop-windows-amd64.zip
 
   release:
@@ -133,4 +148,5 @@ jobs:
           files: |
             dist/frp-desktop-macos-arm64/frp-desktop-macos-arm64.dmg
             dist/frp-desktop-windows-amd64/frp-desktop-windows-amd64.exe
+            dist/frp-desktop-windows-amd64/frp-desktop-windows-amd64-installer.exe
             dist/frp-desktop-windows-amd64/frp-desktop-windows-amd64.zip
