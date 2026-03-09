@@ -23,6 +23,8 @@ const maxLogLines = 500
 const defaultServerAddr = ""
 const defaultServerPort = 7000
 const defaultAuthToken = ""
+const legacyServerAddr = "frp.mouse.asia"
+const legacyAuthToken = "zxcvg123"
 
 type AppConfig struct {
 	FrpcPath   string `json:"frpcPath"`
@@ -110,11 +112,17 @@ func normalizeConfig(cfg AppConfig) AppConfig {
 	cfg.LocalPort = 0
 	cfg.FrpcPath = strings.TrimSpace(cfg.FrpcPath)
 	cfg.ServerAddr = strings.TrimSpace(cfg.ServerAddr)
+	if cfg.ServerAddr == legacyServerAddr {
+		cfg.ServerAddr = ""
+	}
 
 	if cfg.ServerPort <= 0 || cfg.ServerPort > 65535 {
 		cfg.ServerPort = defaultServerPort
 	}
 	cfg.AuthToken = strings.TrimSpace(cfg.AuthToken)
+	if cfg.AuthToken == legacyAuthToken {
+		cfg.AuthToken = ""
+	}
 	if cfg.AuthToken == "" {
 		cfg.AuthToken = defaultAuthToken
 	}
