@@ -109,17 +109,20 @@ jobs:
       - name: Build NSIS installer
         shell: powershell
         run: |
-          $env:PATH = "$HOME\go\bin;$env:PATH"
-          wails build -platform windows/amd64 --nsis
+          $ErrorActionPreference = "Stop"
+          if (!(Test-Path "build\\bin\\frpc.exe")) { throw "frpc.exe not found in build/bin" }
+          Push-Location "build\\windows\\installer"
+          makensis -DARG_WAILS_AMD64_BINARY=..\\..\\bin\\frp.exe project.nsi
+          Pop-Location
 
       - name: Package zip
         shell: powershell
         run: |
           New-Item -ItemType Directory -Path release\windows -Force | Out-Null
           Copy-Item build\bin\frp.exe release\windows\frp-desktop-windows-amd64.exe -Force
-          if (Test-Path "build\bin\frp-desktop-amd64-installer.exe") {
-            Copy-Item build\bin\frp-desktop-amd64-installer.exe release\windows\frp-desktop-windows-amd64-installer.exe -Force
-          }
+          $installer = Get-ChildItem build\bin\*-installer.exe | Select-Object -First 1
+          if (-not $installer) { throw "Windows installer was not generated" }
+          Copy-Item $installer.FullName release\windows\frp-desktop-windows-amd64-installer.exe -Force
           Compress-Archive -Path build\bin\frp.exe,build\bin\frpc.exe -DestinationPath release\windows\frp-desktop-windows-amd64.zip -Force
 
       - name: Upload Windows artifact
