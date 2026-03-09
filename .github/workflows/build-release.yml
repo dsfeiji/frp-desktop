@@ -111,6 +111,8 @@ jobs:
         run: |
           $ErrorActionPreference = "Stop"
           if (!(Test-Path "build\\bin\\frpc.exe")) { throw "frpc.exe not found in build/bin" }
+          New-Item -ItemType Directory -Path "build\\windows\\installer\\tmp" -Force | Out-Null
+          Invoke-WebRequest -Uri "https://go.microsoft.com/fwlink/p/?LinkId=2124703" -OutFile "build\\windows\\installer\\tmp\\MicrosoftEdgeWebview2Setup.exe"
           $appBinary = Get-ChildItem build\bin\*.exe | Where-Object { $_.Name -ne "frpc.exe" -and $_.Name -notlike "*installer*" } | Select-Object -First 1
           if (-not $appBinary) { throw "Windows app binary not found in build/bin" }
           $nsisExe = "${env:ProgramFiles(x86)}\NSIS\makensis.exe"
